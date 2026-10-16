@@ -151,40 +151,40 @@ function startCinematicMotion() {
     chapters.forEach(({ section, heading, details }) => {
       gsap.fromTo(heading,
         { clipPath: 'inset(0 0 100% 0)', y: 34 },
-        { clipPath: 'inset(0 0 0% 0)', y: 0, duration: 1.15, ease: 'power3.out', clearProps: 'clipPath,transform',
-          scrollTrigger: { trigger: section, start: 'top 78%', once: true } });
-      gsap.from(details, {
-        autoAlpha: 0, y: 20, duration: 0.8, stagger: 0.08, ease: 'power2.out',
-        scrollTrigger: { trigger: section, start: 'top 75%', once: true },
-      });
+        { clipPath: 'inset(0 0 0% 0)', y: 0, ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 85%', end: 'top 45%', scrub: true } });
+      gsap.fromTo(details,
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, stagger: 0.08, ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 82%', end: 'top 42%', scrub: true } });
     });
 
-    gsap.utils.toArray('.flavor-card').forEach((card, index) => {
+    gsap.utils.toArray('.flavor-card').forEach((card) => {
       const imageFrame = card.querySelector('.flavor-image-wrap');
-      gsap.from(card, {
-        autoAlpha: 0, y: 42, duration: 1, delay: index * 0.09, ease: cinematicEase,
-        scrollTrigger: { trigger: card, start: 'top 90%', once: true },
-      });
+      gsap.fromTo(card,
+        { autoAlpha: 0, y: 42 },
+        { autoAlpha: 1, y: 0, ease: 'none',
+          scrollTrigger: { trigger: card, start: 'top 95%', end: 'top 70%', scrub: true } });
       gsap.fromTo(imageFrame,
         { clipPath: 'inset(0 0 100% 0)' },
-        { clipPath: 'inset(0 0 0% 0)', duration: 1.1, delay: index * 0.1, ease: 'power3.inOut', clearProps: 'clipPath',
-          scrollTrigger: { trigger: card, start: 'top 88%', once: true } });
-      gsap.from(card.querySelectorAll('.flavor-info, .flavor-description'), {
-        autoAlpha: 0, y: 22, duration: 0.8, stagger: 0.1, delay: index * 0.1, ease: 'power2.out',
-        scrollTrigger: { trigger: card, start: 'top 82%', once: true },
-      });
+        { clipPath: 'inset(0 0 0% 0)', ease: 'none',
+          scrollTrigger: { trigger: card, start: 'top 95%', end: 'top 68%', scrub: true } });
+      gsap.fromTo(card.querySelectorAll('.flavor-info, .flavor-description'),
+        { autoAlpha: 0, y: 22 },
+        { autoAlpha: 1, y: 0, stagger: 0.08, ease: 'none',
+          scrollTrigger: { trigger: card, start: 'top 88%', end: 'top 62%', scrub: true } });
     });
 
-    gsap.utils.toArray('.place-image').forEach((frame, index) => {
+    gsap.utils.toArray('.place-image').forEach((frame) => {
       gsap.fromTo(frame,
         { clipPath: 'inset(0 0 100% 0)' },
-        { clipPath: 'inset(0 0 0% 0)', duration: 1.25, delay: index * 0.12, ease: 'power3.inOut', clearProps: 'clipPath',
-          scrollTrigger: { trigger: frame, start: 'top 85%', once: true } });
+        { clipPath: 'inset(0 0 0% 0)', ease: 'none',
+          scrollTrigger: { trigger: frame, start: 'top 90%', end: 'top 68%', scrub: true } });
     });
-    gsap.from('.address-row', {
-      autoAlpha: 0, y: 28, duration: 0.8, ease: 'power2.out',
-      scrollTrigger: { trigger: '.address-row', start: 'top 88%', once: true },
-    });
+    gsap.fromTo('.address-row',
+      { autoAlpha: 0, y: 28 },
+      { autoAlpha: 1, y: 0, ease: 'none',
+        scrollTrigger: { trigger: '.address-row', start: 'top 88%', end: 'top 62%', scrub: true } });
 
     document.fonts.ready.then(() => ScrollTrigger.refresh());
     window.addEventListener('load', ScrollTrigger.refresh, { once: true });
@@ -196,7 +196,7 @@ function startCinematicMotion() {
     const story = gsap.timeline({
       scrollTrigger: {
         trigger: '.menu-section', start: 'top top', end: '+=75%',
-        pin: true, pinSpacing: true, scrub: 0.8, anticipatePin: 1, refreshPriority: 1,
+        pin: true, pinSpacing: true, scrub: true, anticipatePin: 1, refreshPriority: 1,
       },
     });
     rows.forEach((row) => {
@@ -219,15 +219,26 @@ function startCinematicMotion() {
     star.append(rays);
     wipe.append(star);
     document.body.append(wipe);
-    gsap.timeline({ scrollTrigger: { trigger: '.ticker', start: 'top 45%', end: 'bottom top',
-      scrub: 0.65 } })
+    gsap.timeline({ scrollTrigger: { trigger: '.ticker', start: 'top 65%', end: 'top 22%',
+      scrub: true } })
       .fromTo(wipe, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08, ease: 'none' }, 0)
       .fromTo(star, { scale: 0.15, rotation: -25 }, { scale: 17, rotation: 35,
         duration: 0.72, ease: 'none' }, 0)
       .to(wipe, { autoAlpha: 0, duration: 0.24, ease: 'none' }, 0.76);
 
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true, anchors: true,
+    const lenis = new Lenis({ duration: 0.45, smoothWheel: false, anchors: true,
       prevent: (node) => Boolean(node.closest('dialog')) });
+    const originalScrollTo = lenis.scrollTo.bind(lenis);
+    lenis.scrollTo = (target, options) => {
+      if (target === '#cardapio') {
+        const pinnedMenu = ScrollTrigger.getAll().find((trigger) => trigger.vars.pin && trigger.trigger?.id === 'cardapio');
+        if (pinnedMenu) {
+          const headerOffset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+          return originalScrollTo(pinnedMenu.start - headerOffset, options);
+        }
+      }
+      return originalScrollTo(target, options);
+    };
     smoothScroll = lenis;
     lenis.on('scroll', ScrollTrigger.update);
     const tick = (time) => lenis.raf(time * 1000);
@@ -236,26 +247,26 @@ function startCinematicMotion() {
 
     gsap.fromTo('.hero-photo', { scale: 1.02, yPercent: 0 }, {
       scale: 1.14, yPercent: 9, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
     gsap.to('.hero-content', {
       yPercent: -10, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
     gsap.to('.hero-stamp', {
       rotation: 32, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
     });
 
     gsap.utils.toArray('.flavor-image-wrap img, .place-image img').forEach((image) => {
       gsap.fromTo(image, { yPercent: -6, scale: 1.09 }, {
         yPercent: 6, scale: 1.09, ease: 'none',
-        scrollTrigger: { trigger: image.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1.2 },
+        scrollTrigger: { trigger: image.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
       });
     });
     gsap.fromTo('.contact-circle', { scale: 0.88, rotation: -4 }, {
       scale: 1, rotation: 9, ease: 'none',
-      scrollTrigger: { trigger: '.contact-section', start: 'top bottom', end: 'center center', scrub: 1 },
+      scrollTrigger: { trigger: '.contact-section', start: 'top bottom', end: 'center center', scrub: true },
     });
 
     const cleanups = [];
