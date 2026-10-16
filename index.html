@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#143d35" />
+    <meta name="description" content="Conheça a Pizzaria Shalon em Cordeirópolis: sabores para reunir todo mundo à mesa. Veja o cardápio e fale com a gente pelo WhatsApp." />
+    <title>Pizzaria Shalon — Pizza boa é pizza compartilhada</title>
+    <link rel="preload" as="image" href="./public/assets/pizza-salgada-destaque.webp" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    <div class="topline">
+      <span>Da nossa cozinha para os seus encontros.</span>
+      <span>Cordeirópolis, SP <span class="topline-star" aria-hidden="true">✳</span> Vila Boteon</span>
+    </div>
+
+    <header class="site-header" id="inicio">
+      <div class="header-inner container">
+        <a class="brand" href="#inicio" aria-label="Pizzaria Shalon, voltar ao início">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 10c9-4 21-4 30 0L24 40 9 10Z" fill="#F4EADA" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M10 12c9-4 19-4 28 0" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="22" cy="19" r="2.5" fill="#B9412D"/><circle cx="29" cy="25" r="2.5" fill="#B9412D"/><circle cx="20" cy="29" r="2" fill="#B9412D"/></svg>
+          </span>
+          <span class="brand-type"><strong>Shalon</strong><small>PIZZARIA</small></span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Navegação principal">
+          <a href="#sabores">Sabores</a>
+          <a href="#cardapio">Cardápio</a>
+          <a href="#nossa-casa">Nossa casa</a>
+          <a href="#contato">Contato</a>
+        </nav>
+
+        <a class="header-order" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer" aria-label="Fazer pedido pelo WhatsApp, abre em nova aba">
+          Fazer pedido <span class="icon-arrow" aria-hidden="true"></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button>
+      </div>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="Navegação móvel" hidden>
+        <a href="#sabores">Sabores</a>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#nossa-casa">Nossa casa</a>
+        <a href="#contato">Contato</a>
+        <a class="mobile-order" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer">Pedir pelo WhatsApp <span class="icon-arrow" aria-hidden="true"></span></a>
+      </nav>
+    </header>
+
+    <main id="conteudo">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-photo" role="img" aria-label="Pizza da Pizzaria Shalon com queijo derretido, tomate e azeitonas"></div>
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="container hero-content">
+          <p class="eyebrow hero-eyebrow"><span class="eyebrow-line"></span> PIZZARIA SHALON · CORDEIRÓPOLIS</p>
+          <h1 id="hero-title">Pizza boa<br />é pizza <em>com<br />todo mundo.</em></h1>
+          <p class="hero-copy">Aquela fatia que vira conversa, risada e vontade de ficar mais um pouco. Puxa uma cadeira.</p>
+          <div class="hero-actions">
+            <a class="button button-red" href="#cardapio">Explorar o cardápio <span class="icon-arrow" aria-hidden="true"></span></a>
+            <a class="text-link light" href="#nossa-casa">Conheça nossa casa <span class="icon-arrow icon-down" aria-hidden="true"></span></a>
+          </div>
+        </div>
+        <div class="hero-stamp" aria-hidden="true"><span>feito pra</span><strong>dividir</strong><svg viewBox="0 0 42 12" fill="none"><path d="M1 10C11 1 22 1 41 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="hero-index" aria-hidden="true">01 / 04 — A PRIMEIRA FATIA</div>
+      </section>
+
+      <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>UMA FATIA PUXA OUTRA <i>✳</i> A MESA FICA PEQUENA <i>✳</i> O SABOR FICA NA MEMÓRIA <i>✳</i></span><span>UMA FATIA PUXA OUTRA <i>✳</i> A MESA FICA PEQUENA <i>✳</i> O SABOR FICA NA MEMÓRIA <i>✳</i></span></div></div>
+
+      <section class="favorites section-pad" id="sabores" aria-labelledby="favorites-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div><p class="eyebrow dark-eyebrow">01 <span></span> DIRETO DA NOSSA MESA</p><h2 id="favorites-title">Tem sabor pra<br /><em>todo tipo de encontro.</em></h2></div>
+            <p>Dos clássicos de sempre à última fatia doce. Escolha o seu motivo para reunir a turma.</p>
+          </div>
+
+          <div class="flavor-grid">
+            <article class="flavor-card reveal">
+              <div class="flavor-image-wrap"><img src="./public/assets/pizza-salgada-destaque.webp" alt="Pizza salgada da Shalon com queijo, tomate e azeitonas" loading="lazy" /><span class="flavor-number">01</span></div>
+              <div class="flavor-info"><div><p class="flavor-kicker">PRA COMEÇAR BEM</p><h3>As salgadas</h3></div><span class="flavor-arrow icon-arrow" aria-hidden="true"></span></div>
+              <p class="flavor-description">Mussarela, calabresa, portuguesa e muitos outros jeitos de matar a vontade.</p>
+            </article>
+            <article class="flavor-card reveal">
+              <div class="flavor-image-wrap"><img src="./public/assets/pizza-varios-sabores-destaque.webp" alt="Pizza grande da Shalon com diferentes sabores" loading="lazy" /><span class="flavor-number">02</span></div>
+              <div class="flavor-info"><div><p class="flavor-kicker">PRA COMPARTILHAR</p><h3>As especiais</h3></div><span class="flavor-arrow icon-arrow" aria-hidden="true"></span></div>
+              <p class="flavor-description">Para quem gosta de explorar o cardápio e dividir cada pedaço.</p>
+            </article>
+            <article class="flavor-card reveal">
+              <div class="flavor-image-wrap"><img src="./public/assets/pizza-doce-destaque.webp" alt="Pizza doce da Shalon com chocolate, morango e banana" loading="lazy" /><span class="flavor-number">03</span></div>
+              <div class="flavor-info"><div><p class="flavor-kicker">PRA FECHAR A NOITE</p><h3>As doces</h3></div><span class="flavor-arrow icon-arrow" aria-hidden="true"></span></div>
+              <p class="flavor-description">Chocolate, banana, morango: sempre cabe uma última fatia.</p>
+            </article>
+          </div>
+          <p class="photo-note">Fotos da nossa pizzaria, com tratamento visual para esta página.</p>
+        </div>
+      </section>
+
+      <section class="menu-section section-pad" id="cardapio" aria-labelledby="menu-title">
+        <div class="container menu-layout">
+          <div class="menu-intro reveal">
+            <p class="eyebrow">02 <span></span> O QUE VAI SER HOJE?</p>
+            <h2 id="menu-title">O difícil é<br /><em>escolher só uma.</em></h2>
+            <p>Nosso cardápio tem dos sabores conhecidos àqueles que pedem uma segunda rodada. Dê uma olhada na seleção da casa.</p>
+            <button class="button button-cream" type="button" data-open-menu>Ver cardápio original <span class="icon-arrow" aria-hidden="true"></span></button>
+            <span class="menu-note">Cardápio em imagem · confirme disponibilidade e valores ao pedir.</span>
+          </div>
+          <div class="menu-list reveal" aria-label="Alguns sabores do cardápio">
+            <div class="menu-category"><span class="menu-category-no">01</span><div><h3>As clássicas</h3><p>Mussarela · Calabresa · Portuguesa · 4 Queijos</p></div><span class="menu-category-symbol" aria-hidden="true">✳</span></div>
+            <div class="menu-category"><span class="menu-category-no">02</span><div><h3>As especiais</h3><p>Frango com Catupiry · Lombo · Strogonoff de Frango · Palmito</p></div><span class="menu-category-symbol" aria-hidden="true">✳</span></div>
+            <div class="menu-category"><span class="menu-category-no">03</span><div><h3>As doces</h3><p>Brigadeiro · Banana · Morango · Doce de Leite</p></div><span class="menu-category-symbol" aria-hidden="true">✳</span></div>
+            <div class="menu-handwriting" aria-hidden="true">Qual vai ser<br />a sua? <span class="icon-arrow" aria-hidden="true"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="place-section section-pad" id="nossa-casa" aria-labelledby="place-title">
+        <div class="container">
+          <div class="place-heading reveal"><p class="eyebrow dark-eyebrow">03 <span></span> A NOSSA CASA</p><h2 id="place-title">Pode chegar.<br /><em>A casa é sua.</em></h2><p>Tem lugar para sentar, dividir a pizza e deixar a conversa acontecer. Encontre a Shalon na Vila Boteon, em Cordeirópolis.</p></div>
+          <div class="place-gallery">
+            <figure class="place-image place-image-exterior reveal"><img src="./public/assets/fachada.webp" alt="Fachada verde da Pizzaria Shalon na Vila Boteon" loading="lazy" /><figcaption><span>01 / POR FORA</span> A nossa fachada</figcaption></figure>
+            <figure class="place-image place-image-interior reveal"><img src="./public/assets/salao.webp" alt="Salão da Pizzaria Shalon com mesas e cadeiras" loading="lazy" /><figcaption><span>02 / POR DENTRO</span> Um lugar pra ficar</figcaption></figure>
+          </div>
+          <div class="address-row reveal"><span class="address-pin" aria-hidden="true">✳</span><div><strong>Rua João Boteon, 423</strong><span>Vila Boteon · Cordeirópolis, SP</span></div><a class="text-link" href="https://www.google.com/maps/search/?api=1&query=Rua+Jo%C3%A3o+Boteon+423+Vila+Boteon+Cordeir%C3%B3polis+SP" target="_blank" rel="noopener noreferrer">Como chegar <span class="icon-arrow" aria-hidden="true"></span></a></div>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contato" aria-labelledby="contact-title">
+        <div class="container contact-inner reveal"><div><p class="eyebrow">04 <span></span> BATEU A VONTADE?</p><h2 id="contact-title">A próxima fatia<br /><em>pode ser sua.</em></h2><p>Chame a gente, escolha seu sabor e deixe o resto com a Shalon.</p></div><a class="contact-circle" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer" aria-label="Conversar com a Pizzaria Shalon pelo WhatsApp, abre em nova aba"><span>CHAMAR NO<br />WHATSAPP</span><strong class="icon-arrow" aria-hidden="true"></strong></a></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-top"><a class="footer-brand" href="#inicio">Shalon<span>.</span></a><p>Pizza boa é aquela que<br />junta todo mundo.</p><div><strong>ENCONTRE A GENTE</strong><a href="https://www.google.com/maps/search/?api=1&query=Rua+Jo%C3%A3o+Boteon+423+Vila+Boteon+Cordeir%C3%B3polis+SP" target="_blank" rel="noopener noreferrer">Rua João Boteon, 423<br />Vila Boteon · Cordeirópolis, SP</a></div><div><strong>FALE COM A GENTE</strong><a href="tel:+551935465440">(19) 3546-5440</a><a href="https://wa.me/5519998995173" target="_blank" rel="noopener noreferrer">(19) 99899-5173 <span class="icon-arrow" aria-hidden="true"></span></a></div></div><div class="container footer-bottom"><span>© <span id="year">2026</span> Pizzaria Shalon</span><span>Feito para reunir.</span><a href="#inicio">Voltar ao topo <span class="icon-arrow icon-up" aria-hidden="true"></span></a></div></footer>
+
+    <dialog class="menu-dialog" id="menu-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><div><p class="eyebrow dark-eyebrow">DIRETO DO NOSSO ACERVO</p><h2 id="dialog-title">Cardápio Shalon</h2></div><button class="dialog-close" type="button" data-close-menu aria-label="Fechar cardápio">×</button></div><p class="dialog-description">Imagens do cardápio original. Toque em cada imagem para ampliar. Confirme sabores, disponibilidade e valores atuais com a pizzaria.</p><div class="dialog-images"><a href="./public/assets/cardapio-2.webp" target="_blank" rel="noopener noreferrer" aria-label="Ampliar cardápio de pizzas salgadas, abre em nova aba"><img src="./public/assets/cardapio-2.webp" alt="Cardápio original da Pizzaria Shalon: pizzas salgadas e ingredientes" /></a><a href="./public/assets/cardapio-1.webp" target="_blank" rel="noopener noreferrer" aria-label="Ampliar cardápio de pizzas doces e contatos, abre em nova aba"><img src="./public/assets/cardapio-1.webp" alt="Cardápio original da Pizzaria Shalon: pizzas doces, telefones e endereço" /></a></div><a class="button button-red" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20o%20card%C3%A1pio%20da%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer">Confirmar pelo WhatsApp <span class="icon-arrow" aria-hidden="true"></span></a></dialog>
+  </body>
+</html>
