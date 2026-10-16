@@ -8,7 +8,7 @@ O guia visual Yellowbird enviado serviu como referência para tipografia marcant
 
 GSAP 3.15.0, ScrollTrigger 3.15.0 e Lenis 1.3.27 ficam em `vendor/` e são incorporados ao `index.html` gerado. Assim, as animações funcionam na prévia isolada e na Netlify sem depender de CDN ou instalação de pacotes. A licença do Lenis está em `vendor/LICENSE-Lenis.txt`; o cabeçalho dos arquivos GSAP identifica o autor e os termos em [gsap.com/standard-license](https://gsap.com/standard-license).
 
-Os títulos e as imagens se revelam ao entrar na tela. Em telas amplas, as fotos têm parallax, o cardápio permanece fixo brevemente durante a rolagem e Lenis suaviza a navegação. Em telas menores, o site usa a rolagem nativa e evita o efeito de fixação. A preferência `prefers-reduced-motion: reduce` desliga essas animações e mantém todo o conteúdo visível. Se as bibliotecas não carregarem, o site mantém a revelação básica.
+Na abertura, as linhas e palavras do título surgem em sequência; os demais elementos do hero entram depois. Os títulos, cards e imagens se revelam ao entrar na tela. Em telas amplas, um asterisco vermelho faz a transição entre o hero e os sabores, as fotos têm parallax, o cardápio permanece fixo brevemente durante a rolagem e Lenis suaviza a navegação. Em telas menores, o site usa a rolagem nativa e evita a transição de tela e o efeito de fixação. A preferência `prefers-reduced-motion: reduce` desliga essas animações e mantém todo o conteúdo visível. Se as bibliotecas não carregarem, o site mantém a revelação básica.
 
 ## Executar localmente
 
