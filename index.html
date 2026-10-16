@@ -85,6 +85,7 @@ body.motion-ready .reveal{opacity:0;transform:translateY(30px);transition:opacit
 .hero-line,.hero-line>span{display:block}
 .hero-line{overflow:hidden}
 .hero-word{display:inline-block}
+.scroll-pizza{position:fixed;left:67%;top:calc(50% - 4vh);z-index:60;display:block;width:88px;height:88px;margin:-44px 0 0 -44px;color:var(--green);pointer-events:none;filter:drop-shadow(0 5px 8px rgba(7,27,23,.38));will-change:transform,opacity}
 .scene-wipe{position:fixed;inset:0;z-index:59;display:grid;place-items:center;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;contain:paint;will-change:opacity}
 .scene-wipe-star{display:block;width:min(26vw,270px);height:min(26vw,270px);margin-left:34vw;margin-top:-8vh;color:var(--red);will-change:transform}
 html.lenis,html.lenis body{height:auto}
@@ -480,6 +481,20 @@ function startCinematicMotion() {
   });
 
   motion.add('(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+    // The Shalon pizza mark travels and grows with the existing scene wipe.
+    const pizza = document.querySelector('.brand-mark svg').cloneNode(true);
+    pizza.classList.add('scroll-pizza');
+    pizza.setAttribute('aria-hidden', 'true');
+    pizza.setAttribute('focusable', 'false');
+    document.body.append(pizza);
+    gsap.set(pizza, { y: -140, rotation: -18, scale: 0.88 });
+    gsap.timeline({ scrollTrigger: {
+      trigger: '.ticker', start: 'top bottom', end: 'top 22%', scrub: true,
+    } })
+      .to(pizza, { y: 0, rotation: 24, scale: 1.36, duration: 0.45, ease: 'none' }, 0)
+      .to(pizza, { rotation: 60, scale: 7, duration: 0.37, ease: 'none' }, 0.45)
+      .to(pizza, { autoAlpha: 0, duration: 0.18, ease: 'none' }, 0.82);
+
     const wipe = document.createElement('div');
     wipe.className = 'scene-wipe';
     wipe.setAttribute('aria-hidden', 'true');
@@ -564,6 +579,7 @@ function startCinematicMotion() {
       gsap.ticker.remove(tick);
       lenis.destroy();
       smoothScroll = null;
+      pizza.remove();
       wipe.remove();
     };
   });

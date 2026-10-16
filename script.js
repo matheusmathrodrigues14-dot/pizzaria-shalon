@@ -207,6 +207,20 @@ function startCinematicMotion() {
   });
 
   motion.add('(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+    // The Shalon pizza mark travels and grows with the existing scene wipe.
+    const pizza = document.querySelector('.brand-mark svg').cloneNode(true);
+    pizza.classList.add('scroll-pizza');
+    pizza.setAttribute('aria-hidden', 'true');
+    pizza.setAttribute('focusable', 'false');
+    document.body.append(pizza);
+    gsap.set(pizza, { y: -140, rotation: -18, scale: 0.88 });
+    gsap.timeline({ scrollTrigger: {
+      trigger: '.ticker', start: 'top bottom', end: 'top 22%', scrub: true,
+    } })
+      .to(pizza, { y: 0, rotation: 24, scale: 1.36, duration: 0.45, ease: 'none' }, 0)
+      .to(pizza, { rotation: 60, scale: 7, duration: 0.37, ease: 'none' }, 0.45)
+      .to(pizza, { autoAlpha: 0, duration: 0.18, ease: 'none' }, 0.82);
+
     const wipe = document.createElement('div');
     wipe.className = 'scene-wipe';
     wipe.setAttribute('aria-hidden', 'true');
@@ -291,6 +305,7 @@ function startCinematicMotion() {
       gsap.ticker.remove(tick);
       lenis.destroy();
       smoothScroll = null;
+      pizza.remove();
       wipe.remove();
     };
   });

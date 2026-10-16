@@ -74,6 +74,7 @@ body.motion-ready .reveal{opacity:0;transform:translateY(30px);transition:opacit
 .hero-line,.hero-line>span{display:block}
 .hero-line{overflow:hidden}
 .hero-word{display:inline-block}
+.scroll-pizza{position:fixed;left:67%;top:calc(50% - 4vh);z-index:60;display:block;width:88px;height:88px;margin:-44px 0 0 -44px;color:var(--green);pointer-events:none;filter:drop-shadow(0 5px 8px rgba(7,27,23,.38));will-change:transform,opacity}
 .scene-wipe{position:fixed;inset:0;z-index:59;display:grid;place-items:center;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;contain:paint;will-change:opacity}
 .scene-wipe-star{display:block;width:min(26vw,270px);height:min(26vw,270px);margin-left:34vw;margin-top:-8vh;color:var(--red);will-change:transform}
 html.lenis,html.lenis body{height:auto}
