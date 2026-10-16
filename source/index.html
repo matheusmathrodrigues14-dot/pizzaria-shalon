@@ -8,6 +8,9 @@
     <title>Pizzaria Shalon — Pizza boa é pizza compartilhada</title>
     <link rel="preload" as="image" href="./public/assets/pizza-salgada-destaque.webp" />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./vendor/gsap.min.js" defer></script>
+    <script src="./vendor/ScrollTrigger.min.js" defer></script>
+    <script src="./vendor/lenis.min.js" defer></script>
     <script src="./script.js" defer></script>
   </head>
   <body>
@@ -55,7 +58,7 @@
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="container hero-content">
           <p class="eyebrow hero-eyebrow"><span class="eyebrow-line"></span> PIZZARIA SHALON · CORDEIRÓPOLIS</p>
-          <h1 id="hero-title">Pizza boa<br />é pizza <em>com<br />todo mundo.</em></h1>
+          <h1 id="hero-title" aria-label="Pizza boa é pizza com todo mundo."><span class="hero-line" aria-hidden="true"><span>Pizza boa</span></span><span class="hero-line" aria-hidden="true"><span>é pizza <em>com</em></span></span><span class="hero-line" aria-hidden="true"><span><em>todo mundo.</em></span></span></h1>
           <p class="hero-copy">Aquela fatia que vira conversa, risada e vontade de ficar mais um pouco. Puxa uma cadeira.</p>
           <div class="hero-actions">
             <a class="button button-red" href="#cardapio">Explorar o cardápio <span class="icon-arrow" aria-hidden="true"></span></a>
