@@ -36,6 +36,24 @@ dialog.addEventListener('close', () => {
   dialogOpener.focus();
 });
 
+const imageDialog = document.querySelector('#image-dialog');
+const enlargedImage = imageDialog.querySelector('img');
+let lastZoomButton = null;
+document.querySelectorAll('[data-zoom-menu]').forEach((button) => {
+  button.addEventListener('click', () => {
+    lastZoomButton = button;
+    const previewImage = button.querySelector('img');
+    enlargedImage.src = previewImage.src;
+    enlargedImage.alt = previewImage.alt;
+    imageDialog.showModal();
+  });
+});
+imageDialog.querySelector('[data-close-image]').addEventListener('click', () => imageDialog.close());
+imageDialog.addEventListener('click', (event) => {
+  if (event.target === imageDialog) imageDialog.close();
+});
+imageDialog.addEventListener('close', () => lastZoomButton?.focus());
+
 document.querySelector('#year').textContent = new Date().getFullYear();
 
 const progress = document.querySelector('.scroll-progress');
