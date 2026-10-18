@@ -57,6 +57,98 @@ const menuCatalog = {
   ],
 };
 
+// Only “Gigante Turbinada” appears in the original images; other sizes and all prices are illustrative.
+const menuSizes = [
+  { id: 'broto', label: 'Broto', prices: { salgadas: 32.90, especiais: 39.90, doces: 34.90 } },
+  { id: 'media', label: 'Média', prices: { salgadas: 49.90, especiais: 59.90, doces: 49.90 } },
+  { id: 'grande', label: 'Grande', prices: { salgadas: 64.90, especiais: 77.90, doces: 61.90 } },
+  { id: 'gigante-turbinada', label: 'Gigante Turbinada', prices: { salgadas: 79.90, especiais: 94.90, doces: 74.90 } },
+];
+const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const cartStorageKey = 'shalon-cart-v1';
+const cartDialog = document.querySelector('#cart-dialog');
+const cartItemsElement = document.querySelector('#cart-items');
+const cartCheckout = document.querySelector('#cart-checkout');
+let selectedCategory = 'salgadas';
+let selectedSize = menuSizes.at(-1).id;
+let cartReturnFocus = null;
+
+function getSize(id) { return menuSizes.find((size) => size.id === id); }
+function cartKey(item) { return `${item.category}:${item.flavorIndex}:${item.sizeId}`; }
+function validCartItem(item) {
+  return item && Object.hasOwn(menuCatalog, item.category) &&
+    Number.isInteger(item.flavorIndex) && item.flavorIndex >= 0 &&
+    item.flavorIndex < menuCatalog[item.category].length && getSize(item.sizeId) &&
+    Number.isInteger(item.quantity) && item.quantity > 0 && item.quantity <= 99;
+}
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(cartStorageKey) || '[]');
+    return Array.isArray(saved) ? saved.filter(validCartItem) : [];
+  } catch { return []; }
+}
+let cart = loadCart();
+function saveCart() {
+  try { localStorage.setItem(cartStorageKey, JSON.stringify(cart)); } catch { /* Browsing still works without storage. */ }
+}
+
+function element(tag, className, value) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (value !== undefined) node.textContent = value;
+  return node;
+}
+
+function renderCart() {
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + getSize(item.sizeId).prices[item.category] * item.quantity, 0);
+  document.querySelectorAll('[data-cart-count]').forEach((badge) => { badge.textContent = count; });
+  document.querySelector('[data-open-cart]').setAttribute('aria-label', `Abrir carrinho, ${count} ${count === 1 ? 'item' : 'itens'}`);
+  document.querySelector('#cart-empty').hidden = count > 0;
+  cartItemsElement.replaceChildren(...cart.map((item) => {
+    const flavor = menuCatalog[item.category][item.flavorIndex][0];
+    const size = getSize(item.sizeId);
+    const row = element('li', 'cart-item');
+    row.dataset.key = cartKey(item);
+    const details = element('div', 'cart-item-details');
+    details.append(element('strong', '', flavor), element('span', '', size.label));
+    const actions = element('div', 'cart-item-actions');
+    const quantity = element('div', 'cart-item-quantity');
+    for (const [action, label] of [['decrease', 'Diminuir quantidade'], ['increase', 'Aumentar quantidade']]) {
+      const button = element('button', '', action === 'decrease' ? '−' : '+');
+      button.type = 'button';
+      button.dataset.cartAction = action;
+      button.setAttribute('aria-label', `${label} de ${flavor}`);
+      if (action === 'increase' && item.quantity === 99) button.disabled = true;
+      quantity.append(button);
+      if (action === 'decrease') quantity.append(element('span', '', item.quantity));
+    }
+    const remove = element('button', 'cart-remove', 'Remover');
+    remove.type = 'button';
+    remove.dataset.cartAction = 'remove';
+    remove.setAttribute('aria-label', `Remover ${flavor} do carrinho`);
+    actions.append(quantity, remove);
+    row.append(details, element('span', 'cart-item-price', money.format(size.prices[item.category] * item.quantity)), actions);
+    return row;
+  }));
+  document.querySelector('#cart-total').textContent = money.format(total);
+  if (count) {
+    const lines = cart.map((item) => `• ${item.quantity}× ${menuCatalog[item.category][item.flavorIndex][0]} — ${getSize(item.sizeId).label} (${money.format(getSize(item.sizeId).prices[item.category] * item.quantity)})`);
+    const message = `Olá! Gostaria de consultar este pedido na Pizzaria Shalon:\n\n${lines.join('\n')}\n\nSubtotal estimado: ${money.format(total)}. Os valores do site são fictícios; por favor, confirme preço e disponibilidade.`;
+    cartCheckout.href = `https://wa.me/5519998995173?text=${encodeURIComponent(message)}`;
+    cartCheckout.removeAttribute('aria-disabled');
+  } else {
+    cartCheckout.removeAttribute('href');
+    cartCheckout.setAttribute('aria-disabled', 'true');
+  }
+}
+
+function syncDialogLock() {
+  const open = dialog.open || cartDialog.open;
+  document.body.classList.toggle('dialog-open', open);
+  if (open) smoothScroll?.stop(); else smoothScroll?.start();
+}
+
 function closeMobileMenu() {
   menuToggle.setAttribute('aria-expanded', 'false');
   menuToggle.setAttribute('aria-label', 'Abrir menu');
@@ -77,43 +169,112 @@ window.addEventListener('resize', () => {
 
 const dialogItems = document.querySelector('#dialog-items');
 let menuOpener = null;
+function renderMenuItems() {
+  const size = getSize(selectedSize);
+  dialogItems.replaceChildren(...menuCatalog[selectedCategory].map(([name, ingredients], index) => {
+    const item = element('li');
+    item.append(element('strong', '', name));
+    if (ingredients) item.append(element('span', 'menu-item-ingredients', ingredients));
+    const order = element('div', 'menu-item-order');
+    order.append(element('span', 'menu-item-price', money.format(size.prices[selectedCategory])));
+    const add = element('button', 'menu-add-button', '＋ Adicionar');
+    add.type = 'button';
+    add.dataset.addFlavor = index;
+    add.setAttribute('aria-label', `Adicionar ${name}, ${size.label}, por ${money.format(size.prices[selectedCategory])} ao carrinho`);
+    order.append(add);
+    item.append(order);
+    return item;
+  }));
+}
+
+function renderSizeOptions() {
+  const options = document.querySelector('#menu-size-options');
+  options.replaceChildren(...menuSizes.map((size) => {
+    const label = element('label', 'menu-size-option');
+    const input = element('input');
+    input.type = 'radio';
+    input.name = 'pizza-size';
+    input.value = size.id;
+    input.checked = selectedSize === size.id;
+    label.append(input, element('span', '', size.label));
+    return label;
+  }));
+}
+
 document.querySelectorAll('[data-menu-category]').forEach((button) => {
   button.addEventListener('click', () => {
     menuOpener = button;
-    const category = button.dataset.menuCategory;
-    const flavors = menuCatalog[category];
+    selectedCategory = button.dataset.menuCategory;
+    selectedSize = menuSizes.at(-1).id;
+    const flavors = menuCatalog[selectedCategory];
     const card = button.closest('.flavor-card');
     document.querySelector('#dialog-title').textContent = card.querySelector('h3').textContent;
     document.querySelector('#dialog-count').textContent = `${flavors.length} sabores`;
     document.querySelector('#dialog-photo').src = card.querySelector('img').src;
-    dialogItems.classList.toggle('menu-items-sweet', category === 'doces');
-    dialogItems.replaceChildren(...flavors.map(([name, ingredients]) => {
-      const item = document.createElement('li');
-      const label = document.createElement('strong');
-      label.textContent = name;
-      item.append(label);
-      if (ingredients) {
-        const description = document.createElement('span');
-        description.textContent = ingredients;
-        item.append(description);
-      }
-      return item;
-    }));
+    dialogItems.classList.toggle('menu-items-sweet', selectedCategory === 'doces');
+    document.querySelector('#menu-add-feedback').textContent = '';
+    renderSizeOptions();
+    renderMenuItems();
     dialog.querySelector('.menu-dialog-body').scrollTop = 0;
-    smoothScroll?.stop();
     dialog.showModal();
-    document.body.classList.add('dialog-open');
+    syncDialogLock();
   });
+});
+document.querySelector('#menu-size-options').addEventListener('change', (event) => {
+  if (event.target.matches('input[name="pizza-size"]') && getSize(event.target.value)) {
+    selectedSize = event.target.value;
+    renderMenuItems();
+  }
+});
+dialogItems.addEventListener('click', (event) => {
+  const add = event.target.closest('[data-add-flavor]');
+  if (!add) return;
+  const flavorIndex = Number(add.dataset.addFlavor);
+  const chosen = { category: selectedCategory, flavorIndex, sizeId: selectedSize, quantity: 1 };
+  const existing = cart.find((item) => cartKey(item) === cartKey(chosen));
+  if (existing) existing.quantity = Math.min(99, existing.quantity + 1);
+  else cart.push(chosen);
+  saveCart();
+  renderCart();
+  const name = menuCatalog[selectedCategory][flavorIndex][0];
+  document.querySelector('#menu-add-feedback').textContent = `${name} (${getSize(selectedSize).label}) adicionada ao carrinho.`;
 });
 dialogCloser.addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', (event) => {
   if (event.target === dialog) dialog.close();
 });
 dialog.addEventListener('close', () => {
-  document.body.classList.remove('dialog-open');
-  smoothScroll?.start();
-  menuOpener?.focus();
+  syncDialogLock();
+  if (!cartDialog.open) menuOpener?.focus();
 });
+
+function openCart(button) {
+  cartReturnFocus = dialog.open ? menuOpener : button;
+  if (dialog.open) dialog.close();
+  cartDialog.showModal();
+  syncDialogLock();
+}
+document.querySelector('[data-open-cart]').addEventListener('click', (event) => openCart(event.currentTarget));
+document.querySelector('[data-view-cart]').addEventListener('click', (event) => openCart(event.currentTarget));
+document.querySelector('[data-close-cart]').addEventListener('click', () => cartDialog.close());
+cartDialog.addEventListener('click', (event) => { if (event.target === cartDialog) cartDialog.close(); });
+cartDialog.addEventListener('close', () => { syncDialogLock(); cartReturnFocus?.focus(); });
+cartItemsElement.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-cart-action]');
+  if (!button) return;
+  const index = cart.findIndex((item) => cartKey(item) === button.closest('[data-key]').dataset.key);
+  if (index < 0) return;
+  const action = button.dataset.cartAction;
+  if (action === 'remove' || (action === 'decrease' && cart[index].quantity === 1)) cart.splice(index, 1);
+  else if (action === 'decrease') cart[index].quantity -= 1;
+  else if (action === 'increase') cart[index].quantity = Math.min(99, cart[index].quantity + 1);
+  saveCart();
+  renderCart();
+});
+window.addEventListener('storage', (event) => {
+  if (event.key === cartStorageKey) { cart = loadCart(); renderCart(); }
+});
+renderCart();
 
 document.querySelector('#year').textContent = new Date().getFullYear();
 

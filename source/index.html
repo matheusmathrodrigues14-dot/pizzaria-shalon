@@ -37,6 +37,7 @@
           <a href="#contato">Contato</a>
         </nav>
 
+        <button class="header-cart" type="button" data-open-cart aria-label="Abrir carrinho, 0 itens" aria-controls="cart-dialog"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21 8H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.3" fill="currentColor"/><circle cx="18" cy="20" r="1.3" fill="currentColor"/></svg><span class="cart-count" data-cart-count>0</span></button>
         <a class="header-order" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer" aria-label="Fazer pedido pelo WhatsApp, abre em nova aba">
           Fazer pedido <span class="icon-arrow" aria-hidden="true"></span>
         </a>
@@ -127,9 +128,19 @@
         <div class="menu-dialog-body">
           <div class="dialog-head"><div><p class="eyebrow dark-eyebrow">CARDÁPIO DA CASA <span></span> <span id="dialog-count"></span></p><h2 id="dialog-title">As salgadas</h2></div><button class="dialog-close" type="button" data-close-menu aria-label="Fechar cardápio">×</button></div>
           <p class="dialog-description">Sabores do cardápio da Shalon. Escolha o seu e confirme disponibilidade e valores com a pizzaria.</p>
+          <fieldset class="menu-size-field"><legend>TAMANHO</legend><div class="menu-size-options" id="menu-size-options"></div></fieldset>
+          <p class="menu-price-note">Broto, Média, Grande e todos os preços são fictícios. “Gigante Turbinada” aparece no cardápio antigo. Confirme o valor real ao pedir.</p>
+          <p class="menu-add-feedback" id="menu-add-feedback" role="status" aria-live="polite"></p>
           <ol class="menu-items" id="dialog-items"></ol>
-          <div class="menu-dialog-foot"><span>Feito pra dividir. <i>✳</i></span><a class="button button-red" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20o%20card%C3%A1pio%20da%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp <span class="icon-arrow" aria-hidden="true"></span></a></div>
+          <div class="menu-dialog-foot"><span>Feito pra dividir. <i>✳</i></span><div class="menu-dialog-actions"><button class="button button-outline" type="button" data-view-cart>Ver carrinho <span data-cart-count>0</span></button><a class="button button-red" href="https://wa.me/5519998995173?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20o%20card%C3%A1pio%20da%20Pizzaria%20Shalon." target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp <span class="icon-arrow" aria-hidden="true"></span></a></div></div>
         </div>
+      </div>
+    </dialog>
+    <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+      <div class="cart-dialog-shell">
+        <div class="cart-dialog-head"><div><p class="eyebrow dark-eyebrow">SEU PEDIDO <span></span> SHALON</p><h2 id="cart-title">Meu carrinho<span>.</span></h2></div><button class="dialog-close" type="button" data-close-cart aria-label="Fechar carrinho">×</button></div>
+        <div class="cart-dialog-content"><p class="cart-empty" id="cart-empty">Seu carrinho está vazio. Escolha uma pizza nos cards de sabores.</p><ul class="cart-items" id="cart-items"></ul></div>
+        <div class="cart-dialog-foot"><div class="cart-total"><span>Subtotal estimado</span><strong id="cart-total">R$ 0,00</strong></div><p>Valores fictícios. O pedido e o preço final serão confirmados com a pizzaria pelo WhatsApp.</p><a class="button button-red cart-checkout" id="cart-checkout" target="_blank" rel="noopener noreferrer">Enviar pedido no WhatsApp <span class="icon-arrow" aria-hidden="true"></span></a></div>
       </div>
     </dialog>
   </body>
