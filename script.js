@@ -1,9 +1,61 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const mobileNav = document.querySelector('.mobile-nav');
 const dialog = document.querySelector('#menu-dialog');
-const dialogOpener = document.querySelector('[data-open-menu]');
 const dialogCloser = document.querySelector('[data-close-menu]');
 let smoothScroll = null;
+
+// Transcribed from the two original Shalon menu images; prices were not legible there.
+const menuCatalog = {
+  salgadas: [
+    ['Mussarela', 'Mussarela, tomate, azeitonas e orégano.'],
+    ['Calabresa', 'Mussarela, calabresa, cebola, azeitonas e orégano.'],
+    ['4 Queijos', 'Mussarela, Catupiry, queijo prato e provolone.'],
+    ['Atum', 'Mussarela, atum, cebola e azeitonas.'],
+    ['Portuguesa', 'Mussarela, calabresa, presunto, ervilha, milho e ovo.'],
+    ['Frango com Catupiry', 'Mussarela, frango desfiado, milho, Catupiry e tomate.'],
+    ['Frango com Palmito', 'Mussarela, frango desfiado, palmito, Catupiry e tomate.'],
+    ['Baiana', 'Mussarela, calabresa apimentada, cebola, ovos e Catupiry.'],
+    ['Lombo', 'Mussarela, lombo, Catupiry e tomate.'],
+    ['Brasileira', 'Mussarela, frango, presunto, milho e Catupiry.'],
+    ['Palmito', 'Mussarela, palmito, Catupiry e tomate.'],
+    ['Marguerita', 'Mussarela, manjericão, parmesão, Catupiry e tomate.'],
+    ['Bacon', 'Mussarela, bacon, tomate e azeitonas.'],
+    ['Bauru', 'Mussarela, presunto, Catupiry e tomate.'],
+    ['Milho', 'Mussarela, milho, Catupiry e tomate.'],
+    ['Salame', 'Mussarela, salame, Catupiry e tomate.'],
+  ],
+  especiais: [
+    ['Portuguesa Super', 'Mussarela, presunto, palmito, ervilha, milho, ovo e Catupiry.'],
+    ['Batata', 'Mussarela, purê de batata, calabresa e Catupiry.'],
+    ['Batata Super', 'Mussarela, purê de batata, bacon e Catupiry.'],
+    ['Brócolis com Bacon', 'Mussarela, brócolis refogado ao alho, bacon e Catupiry.'],
+    ['Alho e Óleo', 'Mussarela, alho gratinado, manjericão, Catupiry e tomate.'],
+    ['À Moda da Casa', 'Mussarela, presunto, calabresa, lombo, frango, brócolis, bacon, milho, palmito e Catupiry.'],
+    ['Hot Dog', 'Mussarela, salsicha, azeitonas, orégano e Catupiry.'],
+    ['Creme de Milho', 'Mussarela, creme de milho, Catupiry e tomate.'],
+    ['Strogonoff de Frango'],
+    ['Popy Corn', 'Mussarela, Catupiry, bacon, milho e tomate.'],
+    ['Mexicana', 'Cebola, bacon, alho, mussarela e tomate.'],
+    ['Peruana', 'Mussarela, atum, ovo, cebola e azeitonas.'],
+    ['Paulista', 'Mussarela, frango, bacon, Catupiry e tomate.'],
+    ['Toscana', 'Mussarela, calabresa, Catupiry e tomate.'],
+    ['Vegetariana', 'Mussarela, milho, ervilha, palmito, ovo, brócolis e Catupiry.'],
+    ['Aliche', 'Mussarela, aliche, parmesão, Catupiry e tomate.'],
+    ['Super Mussarela', 'Mussarela, palmito, bacon, Catupiry e tomate.'],
+    ['Peperoni', 'Mussarela, peperoni, Catupiry e tomate.'],
+    ['Bolonhesa', 'Mussarela, carne moída refogada ao alho e tomate.'],
+    ['Americana', 'Mussarela, presunto, bacon, cebola, tomate e ketchup.'],
+    ['Carne Seca', 'Mussarela, Catupiry, carne seca e tomate.'],
+    ['Peito de Peru', 'Mussarela, peito de peru, Catupiry e tomate.'],
+    ['Rúcula', 'Mussarela, Catupiry, rúcula e tomate seco.'],
+    ['Escarola', 'Mussarela, bacon, escarola, cebola e alho frito.'],
+  ],
+  doces: [
+    ['Brigadeiro'], ['Beijinho'], ['Confete'], ['Morango'],
+    ['Mesclada (P e B)'], ['Banana'], ['Choquito'],
+    ['Romeu e Julieta'], ['Prestígio'], ['Doce de Leite'],
+  ],
+};
 
 function closeMobileMenu() {
   menuToggle.setAttribute('aria-expanded', 'false');
@@ -23,39 +75,45 @@ window.addEventListener('resize', () => {
   if (window.innerWidth > 760 && !mobileNav.hidden) closeMobileMenu();
 });
 
-dialogOpener.addEventListener('click', () => {
-  smoothScroll?.stop();
-  dialog.showModal();
-  document.body.classList.add('dialog-open');
+const dialogItems = document.querySelector('#dialog-items');
+let menuOpener = null;
+document.querySelectorAll('[data-menu-category]').forEach((button) => {
+  button.addEventListener('click', () => {
+    menuOpener = button;
+    const category = button.dataset.menuCategory;
+    const flavors = menuCatalog[category];
+    const card = button.closest('.flavor-card');
+    document.querySelector('#dialog-title').textContent = card.querySelector('h3').textContent;
+    document.querySelector('#dialog-count').textContent = `${flavors.length} sabores`;
+    document.querySelector('#dialog-photo').src = card.querySelector('img').src;
+    dialogItems.classList.toggle('menu-items-sweet', category === 'doces');
+    dialogItems.replaceChildren(...flavors.map(([name, ingredients]) => {
+      const item = document.createElement('li');
+      const label = document.createElement('strong');
+      label.textContent = name;
+      item.append(label);
+      if (ingredients) {
+        const description = document.createElement('span');
+        description.textContent = ingredients;
+        item.append(description);
+      }
+      return item;
+    }));
+    dialog.querySelector('.menu-dialog-body').scrollTop = 0;
+    smoothScroll?.stop();
+    dialog.showModal();
+    document.body.classList.add('dialog-open');
+  });
 });
 dialogCloser.addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', (event) => {
   if (event.target === dialog) dialog.close();
 });
-dialog.addEventListener('cancel', () => document.body.classList.remove('dialog-open'));
 dialog.addEventListener('close', () => {
   document.body.classList.remove('dialog-open');
   smoothScroll?.start();
-  dialogOpener.focus();
+  menuOpener?.focus();
 });
-
-const imageDialog = document.querySelector('#image-dialog');
-const enlargedImage = imageDialog.querySelector('img');
-let lastZoomButton = null;
-document.querySelectorAll('[data-zoom-menu]').forEach((button) => {
-  button.addEventListener('click', () => {
-    lastZoomButton = button;
-    const previewImage = button.querySelector('img');
-    enlargedImage.src = previewImage.src;
-    enlargedImage.alt = previewImage.alt;
-    imageDialog.showModal();
-  });
-});
-imageDialog.querySelector('[data-close-image]').addEventListener('click', () => imageDialog.close());
-imageDialog.addEventListener('click', (event) => {
-  if (event.target === imageDialog) imageDialog.close();
-});
-imageDialog.addEventListener('close', () => lastZoomButton?.focus());
 
 document.querySelector('#year').textContent = new Date().getFullYear();
 
@@ -143,7 +201,6 @@ function startCinematicMotion() {
 
     const chapters = [
       { section: '#sabores', heading: '#favorites-title', details: '.section-heading .eyebrow, .section-heading > p' },
-      { section: '#cardapio', heading: '#menu-title', details: '.menu-intro .eyebrow, .menu-intro > p, .menu-intro .button, .menu-note' },
       { section: '#nossa-casa', heading: '#place-title', details: '.place-heading .eyebrow, .place-heading > p' },
       { section: '#contato', heading: '#contact-title', details: '.contact-inner .eyebrow, .contact-inner p:not(.eyebrow)' },
     ];
@@ -191,21 +248,6 @@ function startCinematicMotion() {
     return () => document.body.classList.remove('motion-enhanced');
   });
 
-  motion.add('(min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference)', () => {
-    const rows = gsap.utils.toArray('.menu-category');
-    const story = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.menu-section', start: 'top top', end: '+=75%',
-        pin: true, pinSpacing: true, scrub: true, anticipatePin: 1, refreshPriority: 1,
-      },
-    });
-    rows.forEach((row) => {
-      story.to(row, { x: 18, duration: 1, ease: 'none' })
-        .to(row, { x: 0, duration: 1, ease: 'none' });
-    });
-    story.to('.menu-handwriting', { rotation: 2, y: -18, duration: 1, ease: 'none' }, 0);
-  });
-
   motion.add('(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
     // The Shalon pizza mark travels and grows with the existing scene wipe.
     const pizza = document.querySelector('.brand-mark svg').cloneNode(true);
@@ -242,17 +284,6 @@ function startCinematicMotion() {
 
     const lenis = new Lenis({ duration: 0.45, smoothWheel: false, anchors: true,
       prevent: (node) => Boolean(node.closest('dialog')) });
-    const originalScrollTo = lenis.scrollTo.bind(lenis);
-    lenis.scrollTo = (target, options) => {
-      if (target === '#cardapio') {
-        const pinnedMenu = ScrollTrigger.getAll().find((trigger) => trigger.vars.pin && trigger.trigger?.id === 'cardapio');
-        if (pinnedMenu) {
-          const headerOffset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-          return originalScrollTo(pinnedMenu.start - headerOffset, options);
-        }
-      }
-      return originalScrollTo(target, options);
-    };
     smoothScroll = lenis;
     lenis.on('scroll', ScrollTrigger.update);
     const tick = (time) => lenis.raf(time * 1000);

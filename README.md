@@ -2,13 +2,15 @@
 
 Landing page estática e responsiva para a Pizzaria Shalon, em Cordeirópolis, SP. Sem banco de dados e sem etapa de instalação.
 
-O guia visual Yellowbird enviado serviu como referência para tipografia marcante, seções amplas e ritmo de cartaz. A identidade aplicada usa verde escuro, vermelho e creme, sem o amarelo da referência. A página inclui transições no scroll, menu móvel e visualização do cardápio original.
+O guia visual Yellowbird enviado serviu como referência para tipografia marcante, seções amplas e ritmo de cartaz. A identidade aplicada usa verde escuro, vermelho e creme, sem o amarelo da referência. A página inclui transições no scroll, menu móvel e cardápios acessíveis pelos três cards de sabores.
 
 ## Movimento e acessibilidade
 
 GSAP 3.15.0, ScrollTrigger 3.15.0 e Lenis 1.3.27 ficam em `vendor/` e são incorporados ao `index.html` gerado. Assim, as animações funcionam na prévia isolada e na Netlify sem depender de CDN ou instalação de pacotes. A licença do Lenis está em `vendor/LICENSE-Lenis.txt`; o cabeçalho dos arquivos GSAP identifica o autor e os termos em [gsap.com/standard-license](https://gsap.com/standard-license).
 
-Na abertura, as linhas e palavras do título surgem em sequência; os demais elementos do hero entram depois. Durante a rolagem, títulos, cards, imagens, parallax e transições acompanham diretamente a posição do scroll e retrocedem ao rolar para cima. Em telas amplas, um asterisco vermelho faz a transição entre o hero e os sabores, o cardápio permanece fixo brevemente e Lenis cuida das âncoras; a roda do mouse usa a rolagem nativa para responder sem atraso. Em telas menores, o site usa a rolagem nativa e evita a transição de tela e o efeito de fixação. A preferência `prefers-reduced-motion: reduce` desliga essas animações e mantém todo o conteúdo visível. Se as bibliotecas não carregarem, o site mantém a revelação básica.
+Na abertura, as linhas e palavras do título surgem em sequência; os demais elementos do hero entram depois. Durante a rolagem, títulos, cards, imagens, parallax e transições acompanham diretamente a posição do scroll e retrocedem ao rolar para cima. Em telas amplas, a fatia da marca e um asterisco vermelho fazem a transição entre o hero e os sabores, enquanto Lenis cuida das âncoras; a roda do mouse usa a rolagem nativa para responder sem atraso. Em telas menores, o site usa a rolagem nativa e evita a transição de tela. A preferência `prefers-reduced-motion: reduce` desliga essas animações e mantém todo o conteúdo visível. Se as bibliotecas não carregarem, o site mantém a revelação básica.
+
+Os três cards de sabores abrem listas próprias. Os 50 sabores foram transcritos das imagens do cardápio antigo; as fotos continuam em `public/assets/` como fonte, mas não aparecem mais como cardápio no site. Não há preços na página: disponibilidade e valores devem ser confirmados pelo WhatsApp.
 
 ## Executar localmente
 
